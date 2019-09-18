@@ -31,27 +31,23 @@ public:
 	}
 	void pollevent()
 	{
-		SDL_Delay;
-		if (SDL_PollEvent(event))
+		SDL_Delay(1);
+		while (SDL_PollEvent(&event))
 		{
-			switch (event->type)
+			if (event.type == SDL_QUIT)
 			{
-			case SDL_QUIT:
 				work = false;
 				SDL_DestroyWindow(MainWindow);
-				break;
-			default:
-				break;
 			}
 		}
 		/*SDL_SetWindowPosition(MainWindow, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);*/
 		cout << "SDL_Delay" << endl;
 	}
-private:
-	bool work = true;
-	int width;
-	int height;
-	SDL_Window * MainWindow;
-	SDL_Renderer * render;
-	SDL_Event* event;
+	private:
+		bool work = true;
+		int width;
+		int height;
+		SDL_Event event;
+		SDL_Window* MainWindow;
+		SDL_Renderer* render;
 };
