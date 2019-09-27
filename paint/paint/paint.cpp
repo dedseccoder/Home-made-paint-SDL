@@ -12,7 +12,6 @@ int main()
 	{
 		window.pollevent();
 	}
-	system("pause");
 	SDL_Quit();
 	return 0;
 }

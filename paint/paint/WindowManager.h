@@ -14,8 +14,8 @@ public:
 	{
 		width = w;
 		height = h;
-		render = SDL_CreateRenderer(MainWindow, -1, 0);
-		MainWindow = SDL_CreateWindow("Home made paint" , SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
+		//creating window
+		MainWindow = SDL_CreateWindow("Home made paint" , SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
 		if (MainWindow == NULL)
 		{
 			// In the case that the window could not be made...
@@ -24,30 +24,58 @@ public:
 			SDL_Quit();
 			return;
 		}
-	}
-	bool Work()
-	{
-		return work;
+		//creating render to use it in future
+		render = SDL_CreateRenderer(MainWindow, -1, 0);
+		//set backgrong color
+		SDL_SetRenderDrawColor(render, 255, 255, 255, 1);
+		// Clear the entire screen to our selected color.
+		SDL_RenderClear(render);
 	}
 	void pollevent()
 	{
-		SDL_Delay(1);
 		while (SDL_PollEvent(&event))
 		{
 			if (event.type == SDL_QUIT)
 			{
 				work = false;
 				SDL_DestroyWindow(MainWindow);
+				SDL_DestroyRenderer(render);
+			}
+			if (event.type == SDL_MOUSEMOTION)
+			{
+				SDL_GetMouseState(&xMOUSE, &yMOUSE);
+				cout << "x = " << xMOUSE << "\t" << "y = " << yMOUSE << endl;
+			}
+			if (event.button.button == SDL_BUTTON_LEFT)
+			{
+				SDL_RenderClear(render);
+				SDL_SetRenderDrawColor(render, 0, 191, 255, 1);
+				SDL_RenderDrawPoint(render, xMOUSE, yMOUSE);
+				SDL_RenderPresent(render);
+			}
+			if (event.button.button == SDL_BUTTON_RIGHT)
+			{
+				SDL_RenderClear(render);
+				SDL_SetRenderDrawColor(render, 255, 255, 255, 1);
+				SDL_RenderDrawPoint(render, xMOUSE, yMOUSE);
+				SDL_RenderPresent(render);
 			}
 		}
-		/*SDL_SetWindowPosition(MainWindow, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED);*/
-		cout << "SDL_Delay" << endl;
+		SDL_RenderPresent(render);
+		SDL_Delay(1);
+	}
+
+	bool Work()
+	{
+		return work;
 	}
 	private:
-		bool work = true;
-		int width;
-		int height;
 		SDL_Event event;
 		SDL_Window* MainWindow;
 		SDL_Renderer* render;
+		int x, y;
+		int xMOUSE, yMOUSE;
+		bool work = true;
+		int width;
+		int height;
 };
