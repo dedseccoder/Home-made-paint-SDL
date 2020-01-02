@@ -26,7 +26,6 @@ public:
 		}
 		//creating render to use it in future
 		render = SDL_CreateRenderer(MainWindow, -1, 0);
-		DrawRender = SDL_CreateRenderer(MainWindow, -1, 0);
 		//set backgrong color
 		SDL_SetRenderDrawColor(render, 255, 255, 255, 1);
 		// Clear the entire screen to our selected color.
@@ -41,7 +40,7 @@ public:
 				work = false;
 				SDL_DestroyWindow(MainWindow);
 				SDL_DestroyRenderer(render);
-				SDL_DestroyRenderer(DrawRender);
+				SDL_DestroyRenderer(render);
 			}
 			if (event.type == SDL_MOUSEMOTION)
 			{
@@ -50,10 +49,10 @@ public:
 			}
 			if (event.button.button == SDL_BUTTON_LEFT)
 			{
-				SDL_RenderClear(DrawRender);
-				SDL_SetRenderDrawColor(DrawRender, 0, 191, 255, 1);
+				SDL_RenderClear(render);
+				SDL_SetRenderDrawColor(render, 0, 191, 255, 1);
 				SDL_RenderDrawPoint(render, xMOUSE, yMOUSE);
-				SDL_RenderPresent(DrawRender);
+				SDL_RenderPresent(render);
 				SDL_RenderPresent(render);
 			}
 			if (event.button.button == SDL_BUTTON_RIGHT)
@@ -74,7 +73,7 @@ public:
 	}
 	private:
 		SDL_Event event;
-		SDL_Renderer* DrawRender;
+		//SDL_Renderer* DrawRender;
 		SDL_Window* MainWindow;
 		SDL_Renderer* render;
 		int x, y;
